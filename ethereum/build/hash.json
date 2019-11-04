@@ -1,0 +1,1 @@
+[{"name": "setHash", "outputs": [], "inputs": [{"type": "bytes32", "name": "_hash"}], "constant": false, "payable": false, "type": "function", "gas": 35277}]
