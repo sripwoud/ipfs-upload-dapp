@@ -1,0 +1,28 @@
+{
+  "name": "ipfs-upload-dapp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/6ry0u/ipfs-upload-dapp.git"
+  },
+  "author": "6ry0u",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/6ry0u/ipfs-upload-dapp/issues"
+  },
+  "homepage": "https://github.com/6ry0u/ipfs-upload-dapp#readme",
+  "dependencies": {
+    "ethers": "^4.0.39",
+    "ipfs-http-client": "^39.0.2",
+    "mocha": "^6.2.2",
+    "react": "^16.11.0",
+    "react-dom": "^16.11.0",
+    "semantic-ui-css": "^2.4.1",
+    "semantic-ui-react": "^0.88.1"
+  }
+}
