@@ -1,4 +1,4 @@
-ipfsHash: bytes32
+ipfsHash: public(bytes32)
 
 @public
 def setHash(_hash: bytes32):
