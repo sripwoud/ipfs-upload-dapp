@@ -15,6 +15,6 @@ with open('./contracts/Hash.vy') as f:
     contract = compile(contract_code)
     f.close()
 
-with open('./build/hash.json', 'w', encoding='utf-8') as f:
+with open('../client/src/ethereum/hash.json', 'w', encoding='utf-8') as f:
     json.dump(contract, f, ensure_ascii=False, indent=2)
     f.close()
