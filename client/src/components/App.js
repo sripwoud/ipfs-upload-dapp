@@ -1,8 +1,4 @@
 import React, { Component } from 'react'
-
-import ipfs from '../ipfs'
-import web3 from '../ethereum/web3'
-
 import {
   Form,
   Button,
@@ -11,24 +7,27 @@ import {
   Message
  } from 'semantic-ui-react'
 
+ import { ethers } from 'ethers'
+
+import ipfs from '../ipfs'
+import { provider, signer } from '../ethereum/ethers'
 import contract from '../ethereum/hash'
 import Layout from './Layout'
 
-const { methods: { ipfsHash, setHash }} = contract
-
 class App extends Component {
   state = {
-    hash: null,
+    hash: '',
     buffer: '',
     address: '',
     txHash: '',
     txReceipt: '',
     errorMessage: '',
-    loading: false
+    loading: false,
+    ipfsHash: ''
   }
 
   async componentDidMount () {
-    const hash = await ipfsHash().call()
+    const hash = await contract.ipfsHash()
     this.state = { hash }
   }
 
@@ -52,9 +51,9 @@ class App extends Component {
 
   //ES6 async function
   onClick = async () => {
-    try{
+    try {
       this.setState({ blockNumber: "waiting.." });        this.setState({ gasUsed: "waiting..." });
-      await web3.eth.getTransactionReceipt(
+      await provider.getTransactionReceipt(
         this.state.transactionHash,
         (err, txReceipt) => {
           console.log(err,txReceipt)
@@ -69,30 +68,24 @@ class App extends Component {
     event.preventDefault()
 
     //bring in user's metamask account address
-    const accounts = await web3.eth.getAccounts()
-    const address= await contract.options.address
+    const accounts = await provider.listAccounts()
+    const account = accounts[0]
+    const address = contract.address
     this.setState({ address })
 
     //save document to IPFS,return its hash, and set hash to state
-    await ipfs.add(this.state.buffer, (err, ipfsHash) => {        console.log(err,ipfsHash)
-    this.setState({ ipfsHash: ipfsHash[0].hash })
+    const ipfsHash = await ipfs.add(this.state.buffer)
+    this.setState({ hash: ipfsHash[0].hash })
 
     // call Ethereum contract method "sendHash" and .send IPFS hash to ethereum contract
     //set transaction hash to state
-    setHash(this.state.ipfsHash).send(
-      { from: accounts[0] },
-      (error, transactionHash) => {
-        console.log(transactionHash)
-        this.setState({transactionHash})
-      })
-    })
+    const text = ethers.utils.formatBytes32String('test')
+    const txHash = await contract.setHash(text)
+    this.setState({ txHash })
   }
 
   render () {
-    const list = [
-      'Hash stored',
-      'test'
-    ]
+    console.log(this.state)
     return (
       <Layout>
         <Form
@@ -120,7 +113,9 @@ class App extends Component {
           <Message.Content>
             <Message.Header>Upload successful</Message.Header>
             <Message.List>
-              <Message.Item>IPFS Hash stored on Ethereum Blockchain:</Message.Item>
+              <Message.Item>
+                IPFS Hash stored on Ethereum Blockchain: {this.state.hash}
+              </Message.Item>
               <Message.Item>Transaction hash:</Message.Item>
             </Message.List>
           </Message.Content>
