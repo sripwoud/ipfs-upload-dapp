@@ -2,7 +2,6 @@ import { ethers } from 'ethers'
 require('dotenv').config()
 
 let provider
-let signer
 if (window.ethereum) {
   const ethereum = window.ethereum
   ethereum.enable()
