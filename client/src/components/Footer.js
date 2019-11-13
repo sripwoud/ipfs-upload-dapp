@@ -4,7 +4,6 @@ import { Segment, Divider, Icon } from 'semantic-ui-react'
 export default () => {
   return (
     <div>
-      <a href='' />
       <p>
         Ethereum Contract:&nbsp;
         <a href='https://rinkeby.etherscan.io/address/0x2652162fa9a6a6cfa38b86a8b4a310990b1f65b0'>
