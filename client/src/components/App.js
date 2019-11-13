@@ -10,25 +10,21 @@ import {
  import { ethers } from 'ethers'
 
 import ipfs from '../ipfs'
-import { provider, signer } from '../ethereum/ethers'
 import contract from '../ethereum/hash'
 import Layout from './Layout'
 
 class App extends Component {
   state = {
-    hash: '',
     buffer: '',
-    address: '',
     txHash: '',
-    txReceipt: '',
     errorMessage: '',
     loading: false,
     ipfsHash: ''
   }
 
   async componentDidMount () {
-    const hash = await contract.ipfsHash()
-    this.setState({ hash })
+    const ipfsHash = await contract.ipfsHash()
+    this.setState({ ipfsHash })
   }
 
   //Take file input from user
@@ -49,43 +45,21 @@ class App extends Component {
     this.setState({ buffer })
   }
 
-  //ES6 async function
-  onClick = async () => {
-    try {
-      this.setState({ blockNumber: "waiting.." });        this.setState({ gasUsed: "waiting..." });
-      await provider.getTransactionReceipt(
-        this.state.transactionHash,
-        (err, txReceipt) => {
-          console.log(err,txReceipt)
-          this.setState({txReceipt})
-        })
-      } catch (error) {
-        console.log(error)
-      }
-    }
-
   onSubmit = async (event) => {
     event.preventDefault()
 
-    //bring in user's metamask account address
-    const accounts = await provider.listAccounts()
-    const account = accounts[0]
-    const address = contract.address
-    this.setState({ address })
-
     //save document to IPFS,return its hash, and set hash to state
     const ipfsHash = await ipfs.add(this.state.buffer)
-    this.setState({ hash: ipfsHash[0].hash })
+    this.setState({ ipfsHash: ipfsHash[0].hash })
 
     // call Ethereum contract method "sendHash" and .send IPFS hash to ethereum contract
     //set transaction hash to state
-    const text = ethers.utils.formatBytes32String('test')
+    const text = ethers.utils.formatBytes32String(this.state.ipfsHash)
     const txHash = await contract.setHash(text)
     this.setState({ txHash })
   }
 
   render () {
-    console.log(this.state)
     return (
       <Layout>
         <Form
@@ -108,14 +82,13 @@ class App extends Component {
             Send it!
           </Button>
         </Form>
+        <br/>
+        <p>Last IPFS hash stored onchain: {this.state.ipfsHash}</p>
         <Message icon>
           <Icon name='circle notched' loading />
           <Message.Content>
             <Message.Header>Status</Message.Header>
             <Message.List>
-              <Message.Item>
-                Last IPFS Hash stored on Ethereum Blockchain: {this.state.hash}
-              </Message.Item>
               <Message.Item>Last transaction hash: {this.state.txHash}</Message.Item>
             </Message.List>
           </Message.Content>
