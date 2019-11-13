@@ -28,7 +28,7 @@ class App extends Component {
 
   async componentDidMount () {
     const hash = await contract.ipfsHash()
-    this.state = { hash }
+    this.setState({ hash })
   }
 
   //Take file input from user
@@ -111,12 +111,12 @@ class App extends Component {
         <Message icon>
           <Icon name='circle notched' loading />
           <Message.Content>
-            <Message.Header>Upload successful</Message.Header>
+            <Message.Header>Status</Message.Header>
             <Message.List>
               <Message.Item>
-                IPFS Hash stored on Ethereum Blockchain: {this.state.hash}
+                Last IPFS Hash stored on Ethereum Blockchain: {this.state.hash}
               </Message.Item>
-              <Message.Item>Transaction hash:</Message.Item>
+              <Message.Item>Last transaction hash: {this.state.txHash}</Message.Item>
             </Message.List>
           </Message.Content>
       </Message>
