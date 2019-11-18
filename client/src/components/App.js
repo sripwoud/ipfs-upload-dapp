@@ -25,6 +25,7 @@ class App extends Component {
   async componentDidMount () {
     const ipfsHash = await contract.ipfsHash()
     this.setState({ ipfsHash })
+    console.log(this.state)
   }
 
   //Take file input from user
@@ -47,16 +48,49 @@ class App extends Component {
 
   onSubmit = async (event) => {
     event.preventDefault()
-
-    //save document to IPFS,return its hash, and set hash to state
-    const ipfsHash = await ipfs.add(this.state.buffer)
-    this.setState({ ipfsHash: ipfsHash[0].hash })
+    this.setState({ loading: true, errorMessage: '' })
+    try {
+      //save document to IPFS,return its hash, and set hash to state
+      const results = await ipfs.add(this.state.buffer)
+      console.log(results[0])
+      this.setState({ ipfsHash: results[0].hash })
+    } catch (error) {
+      this.setState({ errorMessage: error.message })
+    }
+    this.setState({ loading: false, })
 
     // call Ethereum contract method "sendHash" and .send IPFS hash to ethereum contract
     //set transaction hash to state
-    const text = ethers.utils.formatBytes32String(this.state.ipfsHash)
-    const txHash = await contract.setHash(text)
+    const txHash = await contract.setHash(this.state.ipfsHash)
     this.setState({ txHash })
+  }
+
+  renderMessage() {
+    if (this.state.loading) {
+      return (
+        <Message icon>
+          <Icon
+            name='circle notched'
+            loading
+          />
+          <Message.Content>
+            <Message.Header>Status</Message.Header>
+          </Message.Content>
+        </Message>
+      )
+    } else {
+      return (
+        <Message>
+          <Message.Content>
+            <Message.Header>Status</Message.Header>
+            Last IPFS hash stored onchain:&nbsp;
+            <a href={`https://ipfs.io/ipfs/${this.state.ipfsHash}`}>
+              {this.state.ipfsHash}
+            </a>
+          </Message.Content>
+        </Message>
+      )
+    }
   }
 
   render () {
@@ -83,16 +117,7 @@ class App extends Component {
           </Button>
         </Form>
         <br/>
-        <p>Last IPFS hash stored onchain: {this.state.ipfsHash}</p>
-        <Message icon>
-          <Icon name='circle notched' loading />
-          <Message.Content>
-            <Message.Header>Status</Message.Header>
-            <Message.List>
-              <Message.Item>Last transaction hash: {this.state.txHash}</Message.Item>
-            </Message.List>
-          </Message.Content>
-      </Message>
+        {this.renderMessage()}
       </Layout>
     )
   }
