@@ -6,8 +6,8 @@ export default () => {
     <div>
       <p>
         Ethereum Contract:&nbsp;
-        <a href='https://rinkeby.etherscan.io/address/0x2652162fa9a6a6cfa38b86a8b4a310990b1f65b0'>
-          0x2652162Fa9A6A6CFA38b86a8b4A310990b1F65B0
+        <a href='https://rinkeby.etherscan.io/address/0x174D16C6940Af5d13875045cC35312f8C618AD2F'>
+          0x174D16C6940Af5d13875045cC35312f8C618AD2F
         </a>
       </p>
       <Divider horizontal>
