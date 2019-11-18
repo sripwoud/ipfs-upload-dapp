@@ -1,5 +1,5 @@
-ipfsHash: public(bytes32)
+ipfsHash: public(string[50])
 
 @public
-def setHash(_hash: bytes32):
+def setHash(_hash: string[50]):
   self.ipfsHash = _hash
