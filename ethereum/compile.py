@@ -10,7 +10,7 @@ def compile(source_code):
     return out
 
 
-with open('./contracts/Hash.vy') as f:
+with open('./contract/Hash.vy') as f:
     contract_code = f.read()
     contract = compile(contract_code)
     f.close()
