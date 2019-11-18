@@ -3,7 +3,7 @@ import pytest
 
 @pytest.fixture
 def hash_contract(w3, get_contract):
-    with open('../ethereum/contracts/Hash.vy') as f:
+    with open('../ethereum/contract/Hash.vy') as f:
         contract_code = f.read()
         contract = get_contract(contract_code)
     return contract

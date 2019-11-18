@@ -15,7 +15,7 @@ print(f'Connected to infura node: {w3.isConnected()}')
 account = w3.eth.account.privateKeyToAccount(getenv('PRIVATE_KEY'))
 
 # get abi and bytecode
-contract_json = json.load(open('./build/hash.json'))
+contract_json = json.load(open('../client/src/ethereum/hash.json'))
 abi = contract_json['abi']
 bytecode = contract_json['bytecode']
 contract = w3.eth.contract(bytecode=bytecode, abi=abi)
