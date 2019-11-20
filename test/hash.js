@@ -17,7 +17,7 @@ contract('hash', async ([_, ...otherAccounts]) => {
   })
 
   it('should have proper default value', async () => {
-    (await counter.ipfHash().call()).should.equal(value)
+    (await hash.ipfsHash()).should.equal('')
   })
 
   it('should update ipfsHash value', async () => {
