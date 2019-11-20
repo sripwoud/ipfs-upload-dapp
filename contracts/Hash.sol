@@ -4,10 +4,10 @@ import "@openzeppelin/contracts-ethereum-package/contracts/GSN/GSNRecipient.sol"
 import "@openzeppelin/upgrades/contracts/Initializable.sol";
 
 contract Hash is Initializable, GSNRecipient {
-  string ipfsHash;
+  string public ipfsHash;
 
   // --------- Make contract GSN-capable
-  function initialize(uint num) public initializer {
+  function initialize() public initializer {
     GSNRecipient.initialize();
   }
 
@@ -43,7 +43,7 @@ contract Hash is Initializable, GSNRecipient {
   }
   // --------------------
   // Hash contract stuff
-  function setHash(string x) public {
+  function setHash(string memory x) public {
     ipfsHash = x;
   }
 }
