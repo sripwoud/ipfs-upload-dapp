@@ -7,6 +7,9 @@ Uploads file to IPFS and stores corresponding hash on Ethereum
 1. Clone or download this repository
 2. `npm i`
 3. `npm start`
+
+### Development
+`ganache-cli --deterministic`
 ## Resources
 Based on this [tutorial](https://www.freecodecamp.org/news/hands-on-get-started-with-infura-and-ipfs-on-ethereum-b63635142af0/)
 with the following improvements/changes:
@@ -17,6 +20,7 @@ with the following improvements/changes:
 - Use ethers.js instead of web3.js
 
 ### Tech stack
+- [Openzeppelin GSN Starter Kit](https://docs.openzeppelin.com/starter-kits/2.3/gsnkit)
 - [React](https://reactjs.org/)
 - [Semantic UI](https://react.semantic-ui.com/)
 - [Infura](https://infura.io/): Ethereum|IPFS API & Gateway
