@@ -54,7 +54,6 @@ export default function Hash(props) {
     if (instance) {
       // Get the value from the contract to prove it worked.
       const response = await instance.methods.ipfsHash().call();
-      console.log(response);
       // Update state with the result.
       setIpfsHash(response);
     }
@@ -64,44 +63,25 @@ export default function Hash(props) {
     getHash();
   }, [getHash, instance]);
 
-  const [sending, setSending] = useState(false);
+  const [updating, setUpdating] = useState(false);
   const [transactionHash, setTransactionHash] = useState('');
 
-  const increase = async number => {
+  const update = async text => {
     try {
-      if (!sending) {
-        setSending(true);
+      if (!updating) {
+        setUpdating(true);
 
-        const tx = await instance.methods.increaseCounter(number).send({ from: accounts[0] });
+        const tx = await instance.methods.setHash(text).send({ from: accounts[0] });
         const receipt = await getTransactionReceipt(lib, tx.transactionHash);
         setTransactionHash(receipt.transactionHash);
 
         getHash();
         getDeploymentAndFunds();
 
-        setSending(false);
+        setUpdating(false);
       }
     } catch (e) {
-      setSending(false);
-      console.log(e);
-    }
-  };
-
-  const decrease = async number => {
-    try {
-      if (!sending) {
-        setSending(true);
-
-        const receipt = await instance.methods.decreaseCounter(number).send({ from: accounts[0] });
-        setTransactionHash(receipt.transactionHash);
-
-        getHash();
-        getDeploymentAndFunds();
-
-        setSending(false);
-      }
-    } catch (e) {
-      setSending(false);
+      setUpdating(false);
       console.log(e);
     }
   };
@@ -197,15 +177,16 @@ export default function Hash(props) {
           {(!!funds || !!balance) && (
             <>
               <div className={styles.label}>
-                <strong>Counter Actions</strong>
+                <strong>Hash Actions</strong>
               </div>
               <div className={styles.buttons}>
-                <Button onClick={() => increase(1)} size="small">
-                  {sending ? <Loader className={styles.loader} color="white" /> : <span> Increase Counter by 1</span>}
+                <Button onClick={() => update('test')} size="small">
+                  {updating ? <Loader className={styles.loader} color="white" /> : <span> Set Hash to 'test'</span>}
                 </Button>
-                <Button onClick={() => decrease(1)} disabled={!(methods && methods.decreaseCounter)} size="small">
-                  {sending ? <Loader className={styles.loader} color="white" /> : <span> Decrease Counter by 1</span>}
+                <Button onClick={() => update('')} size="small">
+                  {updating ? <Loader className={styles.loader} color="white" /> : <span> Reset Hash</span>}
                 </Button>
+                <p>{ipfsHash}</p>
               </div>
             </>
           )}
