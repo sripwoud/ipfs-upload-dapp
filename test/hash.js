@@ -17,11 +17,13 @@ contract('hash', async ([_, ...otherAccounts]) => {
   })
 
   it('should have proper default value', async () => {
-    (await hash.ipfsHash()).should.equal('')
+    const ipfsHash = await hash.ipfsHash.call()
+    ipfsHash.should.equal('')
   })
 
   it('should update ipfsHash value', async () => {
-    await hash.setHash('test');
-    (await hash.ipfsHash()).should.equal('test')
+    const testString = 'test'
+    await hash.setHash(testString);
+    (await hash.ipfsHash()).should.equal(testString)
   })
 })
