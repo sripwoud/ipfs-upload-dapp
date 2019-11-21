@@ -5,9 +5,8 @@ import { useWeb3Network, useEphemeralKey, useWeb3Injected } from '@openzeppelin/
 
 import Header from './components/Header/index.js';
 import Footer from './components/Footer/index.js';
-import Hero from './components/Hero/index.js';
 import Web3Info from './components/Web3Info/index.js';
-import Counter from './components/Counter/index.js';
+import Hash from './components/Hash/index.js';
 
 import styles from './App.module.scss';
 
@@ -34,22 +33,22 @@ function App() {
     },
   });
 
-  // load Counter json artifact
-  let counterJSON = undefined;
+  // load Hash json artifact
+  let hashJSON;
   try {
     // see https://github.com/OpenZeppelin/solidity-loader
-    counterJSON = require('../../contracts/Counter.sol');
+    hashJSON = require('../../contracts/Hash.sol');
   } catch (e) {
     console.log(e);
   }
 
-  // load Counter instance
-  const [counterInstance, setCounterInstance] = useState(undefined);
-  let deployedNetwork = undefined;
-  if (!counterInstance && context && counterJSON && counterJSON.networks && context.networkId) {
-    deployedNetwork = counterJSON.networks[context.networkId.toString()];
+  // load Hash instance
+  const [hashInstance, setHashInstance] = useState(undefined);
+  let deployedNetwork;
+  if (!hashInstance && context && hashJSON && hashJSON.networks && context.networkId) {
+    deployedNetwork = hashJSON.networks[context.networkId.toString()];
     if (deployedNetwork) {
-      setCounterInstance(new context.lib.eth.Contract(counterJSON.abi, deployedNetwork.address));
+      setHashInstance(new context.lib.eth.Contract(hashJSON.abi, deployedNetwork.address));
     }
   }
 
@@ -65,14 +64,13 @@ function App() {
   return (
     <div className={styles.App}>
       <Header />
-      <Hero />
       <div className={styles.wrapper}>
         {!context.lib && renderNoWeb3()}
         <div className={styles.contracts}>
           <h1>BUIDL with GSN Kit!</h1>
           <div className={styles.widgets}>
             <Web3Info title="Web3 Provider" context={context} />
-            <Counter {...context} JSON={counterJSON} instance={counterInstance} deployedNetwork={deployedNetwork} />
+            <Hash {...context} JSON={hashJSON} instance={hashInstance} deployedNetwork={deployedNetwork} />
           </div>
         </div>
       </div>
