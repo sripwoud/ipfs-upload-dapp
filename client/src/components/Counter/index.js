@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { PublicAddress, Button, Loader } from 'rimble-ui';
+import { EthAddress, Button, Loader } from 'rimble-ui';
 
 import styles from './Counter.module.scss';
 
@@ -17,7 +17,7 @@ export default function Counter(props) {
   const [balance, setBalance] = useState(0);
 
   const getBalance = useCallback(async () => {
-    let balance =
+    const balance =
       accounts && accounts.length > 0 ? lib.utils.fromWei(await lib.eth.getBalance(accounts[0]), 'ether') : 'Unknown';
     setBalance(Number(balance));
   }, [accounts, lib.eth, lib.utils]);
@@ -173,11 +173,11 @@ export default function Counter(props) {
       <h3> Counter Instance </h3>
       {lib && !instance && renderNoDeploy()}
       {lib && instance && (
-        <React.Fragment>
+        <>
           <div className={styles.dataPoint}>
             <div className={styles.label}>Instance address:</div>
             <div className={styles.value}>
-              <PublicAddress label="" address={_address} />
+              <EthAddress label="" address={_address} />
             </div>
           </div>
           <div className={styles.dataPoint}>
@@ -194,7 +194,7 @@ export default function Counter(props) {
           {!isGSN && !balance && renderNoBalance()}
 
           {(!!funds || !!balance) && (
-            <React.Fragment>
+            <>
               <div className={styles.label}>
                 <strong>Counter Actions</strong>
               </div>
@@ -206,10 +206,10 @@ export default function Counter(props) {
                   {sending ? <Loader className={styles.loader} color="white" /> : <span> Decrease Counter by 1</span>}
                 </Button>
               </div>
-            </React.Fragment>
+            </>
           )}
           {transactionHash && networkName !== 'Private' && renderTransactionHash()}
-        </React.Fragment>
+        </>
       )}
     </div>
   );

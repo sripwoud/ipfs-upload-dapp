@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { PublicAddress, Button } from 'rimble-ui';
+import { EthAddress, Button } from 'rimble-ui';
 import styles from './Web3Info.module.scss';
 
 export default function Web3Info(props) {
@@ -9,7 +9,7 @@ export default function Web3Info(props) {
   const [balance, setBalance] = useState(0);
 
   const getBalance = useCallback(async () => {
-    let balance =
+    const balance =
       accounts && accounts.length > 0 ? lib.utils.fromWei(await lib.eth.getBalance(accounts[0]), 'ether') : 'Unknown';
     setBalance(balance);
   }, [accounts, lib.eth, lib.utils]);
@@ -36,7 +36,7 @@ export default function Web3Info(props) {
       <div className={styles.dataPoint}>
         <div className={styles.label}>Your address:</div>
         <div className={styles.value}>
-          <PublicAddress label="" address={accounts && accounts.length ? accounts[0] : 'Unknown'} />
+          <EthAddress label="" address={accounts && accounts.length ? accounts[0] : 'Unknown'} />
         </div>
       </div>
       <div className={styles.dataPoint}>
@@ -58,7 +58,7 @@ export default function Web3Info(props) {
           <Button onClick={() => requestAuth(context)}>Request Access</Button>
         </div>
       ) : (
-        <div></div>
+        <div />
       )}
     </div>
   );
