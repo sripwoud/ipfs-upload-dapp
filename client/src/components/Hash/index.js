@@ -1,15 +1,15 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { EthAddress, Button, Loader } from 'rimble-ui';
+import { EthAddress } from 'rimble-ui';
 
 import styles from './Hash.module.scss';
-
+import FileForm from '../FileForm';
 import getTransactionReceipt from '../../utils/getTransactionReceipt';
 import { utils } from '@openzeppelin/gsn-provider';
 const { isRelayHubDeployedForRecipient, getRecipientFunds } = utils;
 
 export default function Hash(props) {
   const { instance, accounts, lib, networkName, networkId, providerName } = props;
-  const { _address, methods } = instance || {};
+  const { _address } = instance || {};
 
   // GSN provider has only one key pair
   const isGSN = providerName === 'GSN';
@@ -48,21 +48,6 @@ export default function Hash(props) {
     getDeploymentAndFunds();
   }, [getDeploymentAndFunds, instance]);
 
-  const [ipfsHash, setIpfsHash] = useState(0);
-
-  const getHash = useCallback(async () => {
-    if (instance) {
-      // Get the value from the contract to prove it worked.
-      const response = await instance.methods.ipfsHash().call();
-      // Update state with the result.
-      setIpfsHash(response);
-    }
-  }, [instance]);
-
-  useEffect(() => {
-    getHash();
-  }, [getHash, instance]);
-
   const [updating, setUpdating] = useState(false);
   const [transactionHash, setTransactionHash] = useState('');
 
@@ -75,13 +60,9 @@ export default function Hash(props) {
         const receipt = await getTransactionReceipt(lib, tx.transactionHash);
         setTransactionHash(receipt.transactionHash);
 
-        getHash();
         getDeploymentAndFunds();
-
-        setUpdating(false);
       }
     } catch (e) {
-      setUpdating(false);
       console.log(e);
     }
   };
@@ -161,10 +142,6 @@ export default function Hash(props) {
               <EthAddress label="" address={_address} />
             </div>
           </div>
-          <div className={styles.dataPoint}>
-            <div className={styles.label}>Hash Value:</div>
-            <div className={styles.value}>{ipfsHash}</div>
-          </div>
           {isGSN && (
             <div className={styles.dataPoint}>
               <div className={styles.label}>Recipient Funds:</div>
@@ -177,16 +154,7 @@ export default function Hash(props) {
           {(!!funds || !!balance) && (
             <>
               <div className={styles.label}>
-                <strong>Hash Actions</strong>
-              </div>
-              <div className={styles.buttons}>
-                <Button onClick={() => update('test')} size="small">
-                  {updating ? <Loader className={styles.loader} color="white" /> : <span> Set Hash to 'test'</span>}
-                </Button>
-                <Button onClick={() => update('')} size="small">
-                  {updating ? <Loader className={styles.loader} color="white" /> : <span> Reset Hash</span>}
-                </Button>
-                <p>{ipfsHash}</p>
+                <FileForm instance={instance} accounts={accounts} />
               </div>
             </>
           )}
