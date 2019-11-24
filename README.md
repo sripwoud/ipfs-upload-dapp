@@ -1,5 +1,5 @@
-# ipfs-upload-dapp
-Uploads file to IPFS and stores corresponding hash on Ethereum
+# IPFS file upload (D)app
+Uploads file to IPFS and stores corresponding hash on Ethereum without requiring user to spend gas.
 
 ## Architecture
 ![Diagram](./img/diagram.jpg)
@@ -15,13 +15,13 @@ Uploads file to IPFS and stores corresponding hash on Ethereum
 Based on this [tutorial](https://www.freecodecamp.org/news/hands-on-get-started-with-infura-and-ipfs-on-ethereum-b63635142af0/)
 with the following improvements/changes:
 - Add tests
-- Use [Gas Station Network](https://gsn.openzeppelin.com/) to turn dapp into app
-- Use rimble UI for front end styling
-- Use ethers.js instead of web3.js
+- **Use [Gas Station Network](https://gsn.openzeppelin.com/) to turn dapp into app**
+- Use Rimble UI for front end styling
 
 ### Tech stack
 - [Openzeppelin GSN Starter Kit](https://docs.openzeppelin.com/starter-kits/2.3/gsnkit)
 - [React](https://reactjs.org/)
 - [Rimble UI](https://rimble.consensys.design/)
 - [Infura](https://infura.io/): Ethereum|IPFS API & Gateway
-- [ethers.js](https://github.com/ethers-io/ethers.js/): Complete Ethereum wallet implementation and utilities in JavaScript
+- [web3.js](https://github.com/ethereum/web3.js/): Ethereum JavaScript API
+- [Ganache](https://github.com/trufflesuite/ganache): Personal blockchain for Ethereum development
