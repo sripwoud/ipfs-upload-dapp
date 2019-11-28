@@ -10,6 +10,8 @@ Uploads file to IPFS and stores corresponding hash on Ethereum without requiring
 1. Start local blockchain network: `ganache-cli --deterministic`
 2. Create contract instance: `oz create`
 3. Don't forget to initialize GSNRecipient contract: `oz send-tx`, `initalize()`
+4. Run front ent locally: `npm run start`
+5. Access at `http://localhost:3000/`
 
 ## Resources
 Based on this [tutorial](https://www.freecodecamp.org/news/hands-on-get-started-with-infura-and-ipfs-on-ethereum-b63635142af0/)
